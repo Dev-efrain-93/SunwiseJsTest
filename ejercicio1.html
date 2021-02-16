@@ -26,8 +26,9 @@
                 </div>
 
                 <button id="reset" type="button" class="btn btn-secondary">Reset</button>
-                <button id="submit" type="submit" class="btn btn-primary">Evaluar</button>
+                <button id="submit" type="button" class="btn btn-primary">Evaluar</button>
             </form>
+            
         </div>
         
     </body>
@@ -36,7 +37,39 @@
         $(document).ready(function(){
 
             $("#submit").on("click", () => {
-                alert("hola mundo");
+                var input = $('#input').val();
+                
+                var lines = [];
+                var tests = [];
+                var outputs = [];
+                if(input.length) lines = input.split('\n');
+
+                var cases = isNaN(lines[0]) ? 0 : parseInt(lines[0]);
+                if(cases > 0) tests = lines.slice(1);
+                if(cases !== tests.length) tests = [];
+
+                for(var i = 0; i < tests.length; i++) {
+
+                    var c = tests[i].trim().split(' ');                   
+                    
+                    if(c.length != 2 || isNaN(c[0]) || isNaN(c[1])) break;
+
+                    var row = parseInt(c[0]);
+                    var column = parseInt(c[1]);
+
+                    if(row > column) {
+                        if(column % 2 === 0) outputs.push('U');
+                        else outputs.push('D');
+                    }else if(row <= column) {
+                        if(row % 2 === 0)outputs.push('L');
+                        else outputs.push('R');
+                    }
+
+                }
+
+                if(tests.length !== outputs.length) outputs = [];
+            
+                $("#output").val(outputs.join('\n'));
             });
 
             $("#reset").on("click", () => {
