@@ -18,6 +18,9 @@
                 <div class="mb-3">
                     <label for="input" class="form-label">Input</label>
                     <textarea class="form-control" id="input" rows="5"></textarea>
+                    <div class="invalid-feedback" id="error">
+                        Por favor, ingresa correctamente los datos de entrada
+                    </div>
                 </div>
 
                 <div class="mb-3">
@@ -38,7 +41,7 @@
 
             $("#submit").on("click", () => {
                 var input = $('#input').val();
-                
+                $(".invalid-feedback").css("display", "none");
                 var lines = [];
                 var tests = [];
                 var outputs = [];
@@ -68,6 +71,8 @@
                 }
 
                 if(tests.length !== outputs.length) outputs = [];
+                if(lines.length > 0 && outputs.length == 0) $(".invalid-feedback").css("display", "block");
+                if(tests.length !== outputs.length) $(".invalid-feedback").css("display", "block");
             
                 $("#output").val(outputs.join('\n'));
             });
@@ -75,6 +80,7 @@
             $("#reset").on("click", () => {
                 $("#input").val('');
                 $("#output").val('');
+                $(".invalid-feedback").css("display", "none");
             });
         });
     </script>
