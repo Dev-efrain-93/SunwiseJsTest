@@ -40,7 +40,7 @@
     </body>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.js" integrity="sha256-DrT5NfxfbHvMHux31Lkhxg42LY6of8TaYyK50jnxRnM=" crossorigin="anonymous"></script>
     <script>
-        $(document).ready(function(){
+        $(document).ready(function() {
 
             $("#submit").on("click", () => {
                 var input = $('#input').val();
@@ -48,29 +48,68 @@
 
                 var years = [];
                 var romanYears = [];
+                var romanYearsStrings = [];
                 var a = 0;
                 var b = 0;
                 var output = "";
 
                 if(input.length) years = input.trim().split('-');
-                if(!years.length || years.length != 2) years = [];
+                if(!years.length) years = [];
+                //comentado, ya que pueden haber escenarios donde solo proporcionan un año del intervalo, lo cual es correcto
+                //if(!years.length || years.length != 2) years = [];
+
 
                 years.forEach(element => {
-                    if(element.length > 0) {
+                    if(element.length > 0) 
+                    {
                         var numbers = element.trim().match(/\d+/g); 
                         var era = element.trim().substring(element.length - 2);
                         var year = numbers && numbers.length ? numbers[0] : 0;
                         var romanYear = 0;
 
-                        if(year > 0) {
-                            if(era === 'BC') romanYear = Math.abs(parseInt(year) - 753) + 1;
+                        if(year > 0) 
+                        {
+                            if(era === 'BC') romanYear = Math.abs(parseInt(year) - 754);
                             if(era === 'AD') romanYear = Math.abs(parseInt(year) + 753);
                             romanYears.push(romanYear);
                         }
                     }                    
                 });
+
+                if(romanYears.length > 0) 
+                {
+                    //Convertidos a su equivalente romano
+                    a = romanYears[0];
+                    b = romanYears[1];
+
+                    //Se pudo no haber definido b en el intervalo
+                    a = a > 0 ? a : 0;                    
+                    b = b > 0 ? b : a;
+
+                    if(a > 0 && a <= b) 
+                    {
+                        for(var i = a; i <= b; i++) 
+                        {
+                            var romanized = romanize(i);
+                            romanYearsStrings.push(romanized);
+                        }
+                    }
+                }
+
+                if(romanYearsStrings.length > 0)
+                {
+                    var max = romanYearsStrings.sort(
+                        function (a, b) {
+                            return b.length - a.length;
+                        }
+                    )[0];
+
+                    output = max.length && max.length > 0 ? max.length : "";
+                }
+
+                if(input.length > 0 && output.length == 0) $(".invalid-feedback").css("display", "block");
             
-                $("#output").val(romanYears);
+                $("#output").val(output);
             });
 
             $("#reset").on("click", () => {
@@ -79,5 +118,23 @@
                 $(".invalid-feedback").css("display", "none");
             });
         });
+
+        /**
+         * Convierte un año natural a su equivalente romano
+         * @param num
+         */
+        function romanize (num) {
+            if (isNaN(num))
+                return NaN;
+            var digits = String(+num).split(""),
+                key = ["","C","CC","CCC","CD","D","DC","DCC","DCCC","CM",
+                    "","X","XX","XXX","XL","L","LX","LXX","LXXX","XC",
+                    "","I","II","III","IV","V","VI","VII","VIII","IX"],
+                roman = "",
+                i = 3;
+            while (i--)
+                roman = (key[+digits.pop() + (i * 10)] || "") + roman;
+            return Array(+digits.join("") + 1).join("M") + roman;
+        }
     </script>
 </html>
