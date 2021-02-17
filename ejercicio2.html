@@ -47,12 +47,30 @@
                 $(".invalid-feedback").css("display", "none");
 
                 var years = [];
+                var romanYears = [];
+                var a = 0;
+                var b = 0;
                 var output = "";
-                if(input.length) years = input.split('-');
 
-                
+                if(input.length) years = input.trim().split('-');
+                if(!years.length || years.length != 2) years = [];
+
+                years.forEach(element => {
+                    if(element.length > 0) {
+                        var numbers = element.trim().match(/\d+/g); 
+                        var era = element.trim().substring(element.length - 2);
+                        var year = numbers && numbers.length ? numbers[0] : 0;
+                        var romanYear = 0;
+
+                        if(year > 0) {
+                            if(era === 'BC') romanYear = Math.abs(parseInt(year) - 753) + 1;
+                            if(era === 'AD') romanYear = Math.abs(parseInt(year) + 753);
+                            romanYears.push(romanYear);
+                        }
+                    }                    
+                });
             
-                $("#output").val(years);
+                $("#output").val(romanYears);
             });
 
             $("#reset").on("click", () => {
