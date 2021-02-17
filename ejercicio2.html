@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="es">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Ejercicio 2</title>
+        <!-- Bootstrap CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+    </head>
+    <body>
+        <div class="container-fluid">
+            <h1>Ejercicio 2</h1>
+
+            <p>
+                A well-known software development company has been commissioned by the Archaeological Society. One of the modules has to help the archaeologists to process data about the ruins of buildings they have found during their excavations of ancient cities. Development of this module has been assigned to Vasya.
+            </p>
+            <p>
+                Vasya, being a seasoned programmer, at once noticed that the module would need a database to contain the descriptions of the ruins and the estimated construction times of the buildings. It would be all fine, but suddenly the manager got the genial idea that since the database describes Roman ruins, the years of construction should be stored in the Roman number system. Now Vasya is wondering how many symbols he needs to set aside for each year number field in the database. According to the functional specification, the software module must be able to handle years from A to B (inclusive). Help Vasya determine the minimal number of characters sufficient for storing any year number in the range from A to B.
+            </p>
+            <form>
+                <div class="mb-3">
+                    <label for="input" class="form-label">Input</label>
+                    <textarea class="form-control" id="input" rows="5"></textarea>
+                    <div class="invalid-feedback" id="error">
+                        Por favor, ingresa correctamente los datos de entrada
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="output" class="form-label">Output</label>
+                    <textarea class="form-control" id="output" rows="5" readonly></textarea>
+                </div>
+
+                <button id="reset" type="button" class="btn btn-secondary">Reset</button>
+                <button id="submit" type="button" class="btn btn-primary">Evaluar</button>
+            </form>
+            
+        </div>
+        
+    </body>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.js" integrity="sha256-DrT5NfxfbHvMHux31Lkhxg42LY6of8TaYyK50jnxRnM=" crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(function(){
+
+            $("#submit").on("click", () => {
+                var input = $('#input').val();
+                $(".invalid-feedback").css("display", "none");
+
+                var years = [];
+                var output = "";
+                if(input.length) years = input.split('-');
+
+                
+            
+                $("#output").val(years);
+            });
+
+            $("#reset").on("click", () => {
+                $("#input").val('');
+                $("#output").val('');
+                $(".invalid-feedback").css("display", "none");
+            });
+        });
+    </script>
+</html>
