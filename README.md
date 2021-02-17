@@ -1,2 +1,2 @@
 # SunwiseTestJs
-Pruebas lógicas Sunwise
+Pruebas lógicas de Sunwise, implementados con Javascript
